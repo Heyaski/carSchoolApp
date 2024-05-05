@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>367</width>
+    <height>591</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+	background: #1E95FE;
+}
+
+QLabel {
+	color: white;
+}
+
+QPushButton {
+	color: #1F95EF;
+	background: #F5FAFE;
+	font-weight: bold;
+	border-radius: 10px;
+}
+
+QLineEdit {
+	border: 1px solid white;
+	border-radius: 10px;
+	padding: 0px 8px;
+}</string>
+  </property>
+  <widget class="QPushButton" name="exitBtn">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>424</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>Выйти</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="passLable">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>274</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;
+font-size: 16px;</string>
+   </property>
+   <property name="text">
+    <string>Пароль</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="passInput">
+   <property name="geometry">
+    <rect>
+     <x>112</x>
+     <y>304</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="loginLable">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>204</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;
+font-size: 16px;</string>
+   </property>
+   <property name="text">
+    <string>Логин</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::AutoText</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="createAccBtn">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>494</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>Создать</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="picture">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>34</y>
+     <width>131</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;
+font-size: 30px;
+border: none;</string>
+   </property>
+   <property name="text">
+    <string>Картинка</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="loginInput">
+   <property name="geometry">
+    <rect>
+     <x>112</x>
+     <y>234</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="logBtn">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>374</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>Войти</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="createAccLable">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>500</y>
+     <width>171</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;
+font-size: 16px;</string>
+   </property>
+   <property name="text">
+    <string>Еще нет аккаунта?</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
