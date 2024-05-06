@@ -41,32 +41,38 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.profileBtn = QtWidgets.QPushButton(parent=self.widget)
         self.profileBtn.setGeometry(QtCore.QRect(20, 90, 181, 32))
+        self.profileBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.profileBtn.setCheckable(True)
         self.profileBtn.setChecked(True)
         self.profileBtn.setAutoExclusive(True)
         self.profileBtn.setObjectName("profileBtn")
         self.informationBtn = QtWidgets.QPushButton(parent=self.widget)
         self.informationBtn.setGeometry(QtCore.QRect(20, 140, 181, 32))
+        self.informationBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.informationBtn.setCheckable(True)
         self.informationBtn.setAutoExclusive(True)
         self.informationBtn.setObjectName("informationBtn")
         self.teachersBtn = QtWidgets.QPushButton(parent=self.widget)
         self.teachersBtn.setGeometry(QtCore.QRect(20, 190, 181, 32))
+        self.teachersBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.teachersBtn.setCheckable(True)
         self.teachersBtn.setAutoExclusive(True)
         self.teachersBtn.setObjectName("teachersBtn")
         self.scheduleBtn = QtWidgets.QPushButton(parent=self.widget)
         self.scheduleBtn.setGeometry(QtCore.QRect(22, 240, 181, 32))
+        self.scheduleBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.scheduleBtn.setCheckable(True)
         self.scheduleBtn.setAutoExclusive(True)
         self.scheduleBtn.setObjectName("scheduleBtn")
         self.adminPanelBtn = QtWidgets.QPushButton(parent=self.widget)
         self.adminPanelBtn.setGeometry(QtCore.QRect(22, 290, 181, 32))
+        self.adminPanelBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.adminPanelBtn.setCheckable(True)
         self.adminPanelBtn.setAutoExclusive(True)
         self.adminPanelBtn.setObjectName("adminPanelBtn")
         self.exitBtn = QtWidgets.QPushButton(parent=self.widget)
         self.exitBtn.setGeometry(QtCore.QRect(22, 480, 181, 32))
+        self.exitBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.exitBtn.setStyleSheet("QPushButton {\n"
 "    color: #1F95EF;\n"
 "    background: #F5FAFE;\n"
@@ -121,12 +127,15 @@ class Ui_MainWindow(object):
         self.countLable.setObjectName("countLable")
         self.changePassBtn = QtWidgets.QPushButton(parent=self.profile_page)
         self.changePassBtn.setGeometry(QtCore.QRect(150, 310, 141, 32))
+        self.changePassBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.changePassBtn.setObjectName("changePassBtn")
         self.editBtn = QtWidgets.QPushButton(parent=self.profile_page)
         self.editBtn.setGeometry(QtCore.QRect(320, 310, 113, 32))
+        self.editBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.editBtn.setObjectName("editBtn")
         self.saveBtn = QtWidgets.QPushButton(parent=self.profile_page)
         self.saveBtn.setGeometry(QtCore.QRect(460, 310, 113, 32))
+        self.saveBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.saveBtn.setObjectName("saveBtn")
         self.dateEdit = QtWidgets.QDateEdit(parent=self.profile_page)
         self.dateEdit.setGeometry(QtCore.QRect(180, 240, 110, 24))
@@ -171,16 +180,102 @@ class Ui_MainWindow(object):
         self.label_5.setObjectName("label_5")
         self.stackedWidget.addWidget(self.schedule_page)
         self.admin_panel = QtWidgets.QWidget()
+        self.admin_panel.setStyleSheet("QLabel {\n"
+"    font-weight: bold;\n"
+"    font-size: 15px;\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"    border-radius: 10px;\n"
+"    background: #1E95FE;\n"
+"    color: white;\n"
+"    font-weight: bold;\n"
+"    font-size: 13px;\n"
+"}\n"
+"\n"
+"QComboBox {\n"
+"    border: 1px solid gray;\n"
+"    border-radius: 3px;\n"
+"    padding: 1px 18px 1px 3px;\n"
+"    min-width: 6em;\n"
+"}\n"
+"\n"
+"QComboBox:on { /* shift the text when the popup opens */\n"
+"    padding-top: 3px;\n"
+"    padding-left: 4px;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down {\n"
+"    subcontrol-origin: padding;\n"
+"    subcontrol-position: top right;\n"
+"    width: 15px;\n"
+"\n"
+"    border-left-width: 1px;\n"
+"    border-left-color: darkgray;\n"
+"    border-left-style: solid; /* just a single line */\n"
+"    border-top-right-radius: 3px; /* same radius as the QComboBox */\n"
+"    border-bottom-right-radius: 3px;\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow:on { /* shift the arrow when popup is open */\n"
+"    top: 1px;\n"
+"    left: 1px;\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow {\n"
+"    background: #1E95FE;\n"
+"    width: 5px;\n"
+"    height: 5px;\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    border: 2px solid darkgray;\n"
+"    selection-color: #1E95FE; selection-background-color: lightgray;\n"
+"}")
         self.admin_panel.setObjectName("admin_panel")
-        self.label_6 = QtWidgets.QLabel(parent=self.admin_panel)
-        self.label_6.setGeometry(QtCore.QRect(160, 150, 251, 91))
-        self.label_6.setStyleSheet("font-size: 30px;")
-        self.label_6.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_6.setObjectName("label_6")
+        self.newTeacherLable = QtWidgets.QLabel(parent=self.admin_panel)
+        self.newTeacherLable.setGeometry(QtCore.QRect(40, 70, 181, 31))
+        self.newTeacherLable.setObjectName("newTeacherLable")
+        self.addInfoLable = QtWidgets.QLabel(parent=self.admin_panel)
+        self.addInfoLable.setGeometry(QtCore.QRect(40, 140, 191, 31))
+        self.addInfoLable.setObjectName("addInfoLable")
+        self.addTeacherInfoLable = QtWidgets.QLabel(parent=self.admin_panel)
+        self.addTeacherInfoLable.setGeometry(QtCore.QRect(40, 210, 201, 31))
+        self.addTeacherInfoLable.setObjectName("addTeacherInfoLable")
+        self.deleteUserLable = QtWidgets.QLabel(parent=self.admin_panel)
+        self.deleteUserLable.setGeometry(QtCore.QRect(40, 280, 181, 31))
+        self.deleteUserLable.setObjectName("deleteUserLable")
+        self.newTeacherComboBox = QtWidgets.QComboBox(parent=self.admin_panel)
+        self.newTeacherComboBox.setGeometry(QtCore.QRect(220, 70, 119, 26))
+        self.newTeacherComboBox.setObjectName("newTeacherComboBox")
+        self.addAdminBtn = QtWidgets.QPushButton(parent=self.admin_panel)
+        self.addAdminBtn.setGeometry(QtCore.QRect(350, 60, 113, 32))
+        self.addAdminBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.addAdminBtn.setObjectName("addAdminBtn")
+        self.removeAdminBtn = QtWidgets.QPushButton(parent=self.admin_panel)
+        self.removeAdminBtn.setGeometry(QtCore.QRect(470, 60, 113, 32))
+        self.removeAdminBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.removeAdminBtn.setObjectName("removeAdminBtn")
+        self.addInfoBtn = QtWidgets.QPushButton(parent=self.admin_panel)
+        self.addInfoBtn.setGeometry(QtCore.QRect(350, 140, 113, 32))
+        self.addInfoBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.addInfoBtn.setObjectName("addInfoBtn")
+        self.addTeacherBtn = QtWidgets.QPushButton(parent=self.admin_panel)
+        self.addTeacherBtn.setGeometry(QtCore.QRect(350, 210, 113, 32))
+        self.addTeacherBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.addTeacherBtn.setObjectName("addTeacherBtn")
+        self.deleteUserComboBox = QtWidgets.QComboBox(parent=self.admin_panel)
+        self.deleteUserComboBox.setGeometry(QtCore.QRect(220, 280, 119, 26))
+        self.deleteUserComboBox.setObjectName("deleteUserComboBox")
+        self.deleteUserBtn = QtWidgets.QPushButton(parent=self.admin_panel)
+        self.deleteUserBtn.setGeometry(QtCore.QRect(350, 280, 113, 32))
+        self.deleteUserBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.deleteUserBtn.setObjectName("deleteUserBtn")
         self.stackedWidget.addWidget(self.admin_panel)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -206,7 +301,15 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Information"))
         self.label_4.setText(_translate("MainWindow", "Teachers"))
         self.label_5.setText(_translate("MainWindow", "Schedule"))
-        self.label_6.setText(_translate("MainWindow", "Admin Panel"))
+        self.newTeacherLable.setText(_translate("MainWindow", "Новый преподаватель"))
+        self.addInfoLable.setText(_translate("MainWindow", "Добавить информацию"))
+        self.addTeacherInfoLable.setText(_translate("MainWindow", "Добавить преподавателя"))
+        self.deleteUserLable.setText(_translate("MainWindow", "Удалить пользователя"))
+        self.addAdminBtn.setText(_translate("MainWindow", "Назначить"))
+        self.removeAdminBtn.setText(_translate("MainWindow", "Удалить"))
+        self.addInfoBtn.setText(_translate("MainWindow", "Добавить"))
+        self.addTeacherBtn.setText(_translate("MainWindow", "Добавить"))
+        self.deleteUserBtn.setText(_translate("MainWindow", "Удалить"))
         self.adminPanelBtn.hide()
         self.nameEdit.setEnabled(False)
         self.surnameEdit.setEnabled(False)

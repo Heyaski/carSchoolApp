@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from PyQt6.QtCore import QDate
 from App2.UI.mainUI import Ui_MainWindow
 from change_password import ChangePasswordDialog
@@ -56,6 +56,8 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
             self.fatherEdit.setText('')
         if self.role == 'admin':
             self.adminPanelBtn.show()
+            self.loadUserList()
+            self.adminPanel()
 
     def changeInfo(self):
         self.nameEdit.setEnabled(True)
@@ -110,6 +112,51 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
 
     def showAdmin(self):
         self.stackedWidget.setCurrentIndex(4)
+
+    def adminPanel(self):
+        self.addAdminBtn.clicked.connect(self.assignAdmin)
+        self.removeAdminBtn.clicked.connect(self.removeAdmin)
+        self.deleteUserBtn.clicked.connect(self.deleteUser)
+
+    def loadUserList(self):
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute("SELECT login FROM users WHERE role='user' OR (role='admin' AND login!=? AND login!='heyaski')",
+                    (self.username,))
+        users = cur.fetchall()
+        for user in users:
+            self.newTeacherComboBox.addItem(user[0])
+            self.deleteUserComboBox.addItem(user[0])
+        con.close()
+
+    def assignAdmin(self):
+        selected_user = self.newTeacherComboBox.currentText()
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute(f"UPDATE users SET role='admin' WHERE login='{selected_user}'")
+        con.commit()
+        con.close()
+        QMessageBox.information(self, 'Успех', f'Пользователь "{selected_user}" назначен администратором.')
+
+    def removeAdmin(self):
+        selected_user = self.newTeacherComboBox.currentText()
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute(f"UPDATE users SET role='user' WHERE login='{selected_user}'")
+        con.commit()
+        con.close()
+        QMessageBox.information(self, 'Успех', f'Администраторские права у пользователя "{selected_user}" сняты.')
+
+    def deleteUser(self):
+        selected_user = self.deleteUserComboBox.currentText()
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute(f"DELETE FROM users WHERE login='{selected_user}'")
+        con.commit()
+        con.close()
+        QMessageBox.information(self, 'Успех', f'Пользователь {selected_user} удален из системы.')
+        self.deleteUserComboBox.removeItem(self.deleteUserComboBox.findText(selected_user))
+        self.newTeacherComboBox.removeItem(self.newTeacherComboBox.findText(selected_user))
 
     def changePass(self):
         change_password_dialog = ChangePasswordDialog(self.username)
