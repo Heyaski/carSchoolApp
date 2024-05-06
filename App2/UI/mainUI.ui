@@ -75,6 +75,9 @@ QPushButton:checked {
      <property name="checkable">
       <bool>true</bool>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
      <property name="autoExclusive">
       <bool>true</bool>
      </property>
@@ -224,7 +227,7 @@ QLineEdit {
       <widget class="QLabel" name="infoLable">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>30</x>
          <y>10</y>
          <width>201</width>
          <height>21</height>
