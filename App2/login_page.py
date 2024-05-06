@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QMessageBox
-from personal_cabinet import PersonalCabinet
+from mainWindow import PersonalCabinet
 from registration_page import RegistrationPage
 from App2.UI.login_pageUI import Ui_Form
 import sqlite3, sys

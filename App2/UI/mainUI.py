@@ -13,7 +13,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(864, 557)
-        MainWindow.setStyleSheet("background:c #F5FaFE")
+        MainWindow.setStyleSheet("background: #F5FaFE;")
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
@@ -157,11 +157,10 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.profile_page)
         self.Information_page = QtWidgets.QWidget()
         self.Information_page.setObjectName("Information_page")
-        self.label_3 = QtWidgets.QLabel(parent=self.Information_page)
-        self.label_3.setGeometry(QtCore.QRect(160, 150, 251, 91))
-        self.label_3.setStyleSheet("font-size: 30px;")
-        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_3.setObjectName("label_3")
+        self.infoTextEdit = QtWidgets.QTextEdit(parent=self.Information_page)
+        self.infoTextEdit.setGeometry(QtCore.QRect(10, 10, 571, 411))
+        self.infoTextEdit.setReadOnly(True)
+        self.infoTextEdit.setObjectName("infoTextEdit")
         self.stackedWidget.addWidget(self.Information_page)
         self.teachers_page = QtWidgets.QWidget()
         self.teachers_page.setObjectName("teachers_page")
@@ -230,7 +229,7 @@ class Ui_MainWindow(object):
 "\n"
 "QComboBox QAbstractItemView {\n"
 "    border: 2px solid darkgray;\n"
-"    selection-color: #1E95FE; selection-background-color: lightgray;\n"
+"    selection-background-color: lightgray; selection-color: #1E95FE;\n"
 "}")
         self.admin_panel.setObjectName("admin_panel")
         self.newTeacherLable = QtWidgets.QLabel(parent=self.admin_panel)
@@ -298,7 +297,11 @@ class Ui_MainWindow(object):
         self.editBtn.setText(_translate("MainWindow", "Редактировать"))
         self.saveBtn.setText(_translate("MainWindow", "Сохранить"))
         self.countEdit.setText(_translate("MainWindow", "0"))
-        self.label_3.setText(_translate("MainWindow", "Information"))
+        self.infoTextEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.label_4.setText(_translate("MainWindow", "Teachers"))
         self.label_5.setText(_translate("MainWindow", "Schedule"))
         self.newTeacherLable.setText(_translate("MainWindow", "Новый преподаватель"))

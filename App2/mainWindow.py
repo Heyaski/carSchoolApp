@@ -1,7 +1,11 @@
-from PyQt6.QtWidgets import QMainWindow, QMessageBox
+from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QDialog, QTableWidgetItem
 from PyQt6.QtCore import QDate
+from PyQt6.uic.properties import QtGui
+
 from App2.UI.mainUI import Ui_MainWindow
-from change_password import ChangePasswordDialog
+from add_info import AddInfoDialog
+from change_password import ChangePasswordDialog # Подключаем UI для диалогового окна
 import sqlite3
 
 
@@ -25,6 +29,7 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         self.changePassBtn.clicked.connect(self.changePass)
         self.saveBtn.clicked.connect(self.save)
         self.editBtn.clicked.connect(self.changeInfo)
+
 
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
@@ -106,6 +111,8 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
 
     def showInfo(self):
         self.stackedWidget.setCurrentIndex(1)
+        self.infoTextEdit.clear()
+        self.loadInfoText()
 
     def showTeacher(self):
         self.stackedWidget.setCurrentIndex(2)
@@ -117,6 +124,8 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         self.addAdminBtn.clicked.connect(self.assignAdmin)
         self.removeAdminBtn.clicked.connect(self.removeAdmin)
         self.deleteUserBtn.clicked.connect(self.deleteUser)
+        self.addInfoBtn.clicked.connect(self.addInfo)
+
 
     def loadUserList(self):
         con = sqlite3.connect('Data/users_info.db')
@@ -162,8 +171,33 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         change_password_dialog = ChangePasswordDialog(self.username)
         change_password_dialog.exec()
 
+    def addInfo(self):
+        add_info = AddInfoDialog()
+        add_info.exec()
+
+    from PyQt6.QtGui import QFont
+
+    def loadInfoText(self):
+        con = sqlite3.connect("Data/users_info.db")
+        cur = con.cursor()
+        query_info = """
+                    SELECT title, text
+                    FROM information
+                    """
+        cur.execute(query_info)
+        info = cur.fetchall()
+        con.close()
+
+        for title, text in reversed(info):  # Используем reversed() для добавления информации сверху
+            formatted_text = f"<b><font size='4'>{title}</font></b><br><br>{text}<br>{'-'*93}<br><br>"
+            cursor = self.infoTextEdit.textCursor() # Перемещаем курсор в начало текста
+            cursor.insertHtml(formatted_text)  # Вставляем отформатированный текст в текстовое поле
+
     def logout(self):
         self.close()
         from login_page import LoginPage
         self.login_page = LoginPage()
         self.login_page.show()
+
+
+
