@@ -222,7 +222,7 @@ QPushButton:checked {
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="profile_page">
       <property name="styleSheet">
@@ -548,6 +548,7 @@ QComboBox::down-arrow {
 QComboBox QAbstractItemView {
     border: 2px solid darkgray;
     selection-background-color: lightgray;
+	selection-color: #1E95FE;
 }</string>
       </property>
       <widget class="QLabel" name="newTeacherLable">
@@ -702,7 +703,64 @@ QComboBox QAbstractItemView {
         <string>Удалить</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="removeTeacherBtn">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>210</y>
+         <width>113</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Удалить</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="removeInfoBtn">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>140</y>
+         <width>113</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Удалить</string>
+       </property>
+      </widget>
      </widget>
+    </widget>
+    <widget class="QPushButton" name="notificationBtn">
+     <property name="geometry">
+      <rect>
+       <x>482</x>
+       <y>30</y>
+       <width>121</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	border-radius: 10px;
+	background: #1E95FE;
+	color: white;
+	font-weight: bold;
+	font-size: 13px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Уведомления</string>
+     </property>
     </widget>
    </widget>
   </widget>

@@ -34,7 +34,7 @@ class ChangePasswordDialog(QDialog, Ui_Dialog):
             con.commit()
             con.close()
             QMessageBox.information(self, "Успех", "Пароль успешно изменён")
-            self.close()
+            self.accept()
 
     def cancel(self):
-        self.close()
+        self.accept()

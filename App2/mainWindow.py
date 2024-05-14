@@ -1,11 +1,13 @@
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QDialog, QTableWidgetItem
-from PyQt6.QtCore import QDate
+from PyQt6.QtCore import QDate, QTimer
 from PyQt6.uic.properties import QtGui
 
 from App2.UI.mainUI import Ui_MainWindow
+from delete_info import deletInfoDialog
 from add_info import AddInfoDialog
-from change_password import ChangePasswordDialog # Подключаем UI для диалогового окна
+from change_password import ChangePasswordDialog  # Подключаем UI для диалогового окна
+from notification import Notification
 import sqlite3
 
 
@@ -17,7 +19,8 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         self.login_page = None
         self.setupUi(self)
         self.main()
-        self.setWindowTitle("Ехай Бля")
+        self.setWindowTitle("Ехай")
+        self.setFixedSize(864, 557)
 
     def main(self):
         self.exitBtn.clicked.connect(self.logout)
@@ -29,17 +32,21 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         self.changePassBtn.clicked.connect(self.changePass)
         self.saveBtn.clicked.connect(self.save)
         self.editBtn.clicked.connect(self.changeInfo)
-
+        self.notificationBtn.clicked.connect(self.openNotification)
 
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
         query_nameInfo = """
-                        SELECT firstname, lastname, fathername, date, role
+                        SELECT firstname, lastname, fathername, date, role, cleared
                         FROM users
                         WHERE login = ?
                         """
         cur.execute(query_nameInfo, (self.username,))
         nameInfo = cur.fetchall()
+        if nameInfo[0][5] == 'yes':
+            self.notificationBtn.setText('Уведомления')
+        else:
+            self.notificationBtn.setText('Прочитать')
         self.role = nameInfo[0][4]
         if nameInfo[0] != None:
             self.nameEdit.setText(nameInfo[0][0])
@@ -59,6 +66,7 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
             self.nameEdit.setText('')
             self.surnameEdit.setText('')
             self.fatherEdit.setText('')
+
         if self.role == 'admin':
             self.adminPanelBtn.show()
             self.loadUserList()
@@ -112,7 +120,8 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
     def showInfo(self):
         self.stackedWidget.setCurrentIndex(1)
         self.infoTextEdit.clear()
-        self.loadInfoText()
+        load = AddInfoDialog(self, self.username)
+        load.loadInfoText()
 
     def showTeacher(self):
         self.stackedWidget.setCurrentIndex(2)
@@ -125,7 +134,7 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         self.removeAdminBtn.clicked.connect(self.removeAdmin)
         self.deleteUserBtn.clicked.connect(self.deleteUser)
         self.addInfoBtn.clicked.connect(self.addInfo)
-
+        self.removeInfoBtn.clicked.connect(self.deleteInfo)
 
     def loadUserList(self):
         con = sqlite3.connect('Data/users_info.db')
@@ -172,32 +181,20 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         change_password_dialog.exec()
 
     def addInfo(self):
-        add_info = AddInfoDialog()
+        add_info = AddInfoDialog(self, self.username)
         add_info.exec()
 
-    from PyQt6.QtGui import QFont
+    def deleteInfo(self):
+        delete_info = deletInfoDialog()
+        delete_info.exec()
 
-    def loadInfoText(self):
-        con = sqlite3.connect("Data/users_info.db")
-        cur = con.cursor()
-        query_info = """
-                    SELECT title, text
-                    FROM information
-                    """
-        cur.execute(query_info)
-        info = cur.fetchall()
-        con.close()
-
-        for title, text in reversed(info):  # Используем reversed() для добавления информации сверху
-            formatted_text = f"<b><font size='4'>{title}</font></b><br><br>{text}<br>{'-'*93}<br><br>"
-            cursor = self.infoTextEdit.textCursor() # Перемещаем курсор в начало текста
-            cursor.insertHtml(formatted_text)  # Вставляем отформатированный текст в текстовое поле
+    def openNotification(self):
+        notification = Notification(self, self.username)
+        self.notificationBtn.setText('Уведомления')
+        notification.exec()
 
     def logout(self):
         self.close()
         from login_page import LoginPage
         self.login_page = LoginPage()
         self.login_page.show()
-
-
-

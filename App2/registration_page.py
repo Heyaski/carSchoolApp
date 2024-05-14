@@ -50,8 +50,8 @@ class RegistrationPage(QWidget, Ui_Form):
             QMessageBox.information(self, 'Внимание', 'Логин уже используется!')
         else:
             insert = f"""
-                    INSERT INTO users(id, login, password, role)
-                    VALUES({len(ids) + 1}, '{login}', '{password}', 'user')
+                    INSERT INTO users(login, password, role)
+                    VALUES('{login}', '{password}', 'user')
                     """
             cur.execute(insert)
             self.loginInput.setText('')

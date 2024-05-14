@@ -7,6 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtCore import Qt
 
 
 class Ui_MainWindow(object):
@@ -229,7 +230,8 @@ class Ui_MainWindow(object):
 "\n"
 "QComboBox QAbstractItemView {\n"
 "    border: 2px solid darkgray;\n"
-"    selection-background-color: lightgray; selection-color: #1E95FE;\n"
+"    selection-background-color: lightgray;\n"
+"    selection-color: #1E95FE;\n"
 "}")
         self.admin_panel.setObjectName("admin_panel")
         self.newTeacherLable = QtWidgets.QLabel(parent=self.admin_panel)
@@ -270,7 +272,26 @@ class Ui_MainWindow(object):
         self.deleteUserBtn.setGeometry(QtCore.QRect(350, 280, 113, 32))
         self.deleteUserBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.deleteUserBtn.setObjectName("deleteUserBtn")
+        self.removeTeacherBtn = QtWidgets.QPushButton(parent=self.admin_panel)
+        self.removeTeacherBtn.setGeometry(QtCore.QRect(470, 210, 113, 32))
+        self.removeTeacherBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.removeTeacherBtn.setObjectName("removeTeacherBtn")
+        self.removeInfoBtn = QtWidgets.QPushButton(parent=self.admin_panel)
+        self.removeInfoBtn.setGeometry(QtCore.QRect(470, 140, 113, 32))
+        self.removeInfoBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.removeInfoBtn.setObjectName("removeInfoBtn")
         self.stackedWidget.addWidget(self.admin_panel)
+        self.notificationBtn = QtWidgets.QPushButton(parent=self.widget_2)
+        self.notificationBtn.setGeometry(QtCore.QRect(482, 30, 121, 32))
+        self.notificationBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.notificationBtn.setStyleSheet("QPushButton {\n"
+"    border-radius: 10px;\n"
+"    background: #1E95FE;\n"
+"    color: white;\n"
+"    font-weight: bold;\n"
+"    font-size: 13px;\n"
+"}")
+        self.notificationBtn.setObjectName("notificationBtn")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -313,6 +334,20 @@ class Ui_MainWindow(object):
         self.addInfoBtn.setText(_translate("MainWindow", "Добавить"))
         self.addTeacherBtn.setText(_translate("MainWindow", "Добавить"))
         self.deleteUserBtn.setText(_translate("MainWindow", "Удалить"))
+        self.removeTeacherBtn.setText(_translate("MainWindow", "Удалить"))
+        self.removeInfoBtn.setText(_translate("MainWindow", "Удалить"))
+        self.notificationBtn.setText(_translate("MainWindow", "Прочитать"))
+        self.infoTextEdit.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть вертикальную полосу прокрутки
+        self.infoTextEdit.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть горизонтальную полосу прокрутки
+        self.infoTextEdit.setStyleSheet("""
+                            QTextEdit {
+                                border: none;  # Убрать границы
+                                padding: 10px;  # Добавить отступы вокруг текста
+                                background-color: #f0f0f0;  # Цвет фона
+                                color: #333333;  # Цвет текста
+                                font-size: 14px;  # Размер шрифта
+                            }
+                        """)
         self.adminPanelBtn.hide()
         self.nameEdit.setEnabled(False)
         self.surnameEdit.setEnabled(False)
