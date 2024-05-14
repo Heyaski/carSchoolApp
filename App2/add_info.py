@@ -36,6 +36,7 @@ class AddInfoDialog(QDialog, Ui_Dialog, Ui_MainWindow):
             self.accept()
             add = Notification(main_window=self, username=self.username)
             add.updateCleared('yes')
+            add.updateRead('yes')
             self.main_window.notificationBtn.setText('Прочтиать')
         con.close()
 

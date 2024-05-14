@@ -37,7 +37,7 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
         query_nameInfo = """
-                        SELECT firstname, lastname, fathername, date, role, cleared
+                        SELECT firstname, lastname, fathername, date, role, read
                         FROM users
                         WHERE login = ?
                         """
@@ -191,6 +191,7 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
     def openNotification(self):
         notification = Notification(self, self.username)
         self.notificationBtn.setText('Уведомления')
+        notification.read_notification()
         notification.exec()
 
     def logout(self):

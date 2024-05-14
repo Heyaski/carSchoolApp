@@ -59,17 +59,29 @@ class Notification(QDialog, Ui_DialogNot, Ui_MainWindow):
         con.commit()
         con.close()
 
-    def read(self):
-        self.notificationBtn.setText('Уведомления')
+    def read_notification(self):
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute("UPDATE users SET read='yes' WHERE login=?", (self.username,))
+        con.commit()
+        con.close()
 
     def updateCleared(self, new_value):
         self.cleared = new_value
         con = sqlite3.connect('Data/users_info.db')
         cur = con.cursor()
-        con.execute("UPDATE users SET cleared='no'")
+        cur.execute("UPDATE users SET cleared='no' WHERE login=?", (self.username,))
         con.commit()
         con.close()
         self.loadNotificationText()
+
+    def updateRead(self, new_value):
+        self.read = new_value
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute("UPDATE users SET read='no' WHERE login=?", (self.username,))
+        con.commit()
+        con.close()
 
     def close(self):
         self.accept()
