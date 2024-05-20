@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
         self.widget_2.setGeometry(QtCore.QRect(230, 0, 641, 561))
         self.widget_2.setObjectName("widget_2")
         self.stackedWidget = QtWidgets.QStackedWidget(parent=self.widget_2)
-        self.stackedWidget.setGeometry(QtCore.QRect(20, 90, 591, 441))
+        self.stackedWidget.setGeometry(QtCore.QRect(10, 70, 611, 461))
         self.stackedWidget.setStyleSheet("")
         self.stackedWidget.setObjectName("stackedWidget")
         self.profile_page = QtWidgets.QWidget()
@@ -172,12 +172,40 @@ class Ui_MainWindow(object):
         self.label_4.setObjectName("label_4")
         self.stackedWidget.addWidget(self.teachers_page)
         self.schedule_page = QtWidgets.QWidget()
+        self.schedule_page.setStyleSheet("QPushButton {\n"
+"    border-radius: 10px;\n"
+"    background: #1E95FE;\n"
+"    color: white;\n"
+"    font-weight: bold;\n"
+"    font-size: 13px;\n"
+"}")
         self.schedule_page.setObjectName("schedule_page")
-        self.label_5 = QtWidgets.QLabel(parent=self.schedule_page)
-        self.label_5.setGeometry(QtCore.QRect(180, 160, 251, 91))
-        self.label_5.setStyleSheet("font-size: 30px;")
-        self.label_5.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_5.setObjectName("label_5")
+        self.scheduleTableWidget = QtWidgets.QTableWidget(parent=self.schedule_page)
+        self.scheduleTableWidget.setGeometry(QtCore.QRect(0, 30, 611, 431))
+        self.scheduleTableWidget.setObjectName("scheduleTableWidget")
+        self.scheduleTableWidget.setColumnCount(0)
+        self.scheduleTableWidget.setRowCount(0)
+        self.prevWeekBtn = QtWidgets.QPushButton(parent=self.schedule_page)
+        self.prevWeekBtn.setGeometry(QtCore.QRect(0, 0, 41, 21))
+        self.prevWeekBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.prevWeekBtn.setObjectName("prevWeekBtn")
+        self.nextWeekBtn = QtWidgets.QPushButton(parent=self.schedule_page)
+        self.nextWeekBtn.setGeometry(QtCore.QRect(570, 0, 41, 21))
+        self.nextWeekBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.nextWeekBtn.setStyleSheet("QPushButton {\n"
+"\"\n"
+"                                       \"    border-radius: 10px;\n"
+"\"\n"
+"                                       \"    background: #1E95FE;\n"
+"\"\n"
+"                                       \"    color: white;\n"
+"\"\n"
+"                                       \"    font-weight: bold;\n"
+"\"\n"
+"                                       \"    font-size: 13px;\n"
+"\"\n"
+"                                       \"}")
+        self.nextWeekBtn.setObjectName("nextWeekBtn")
         self.stackedWidget.addWidget(self.schedule_page)
         self.admin_panel = QtWidgets.QWidget()
         self.admin_panel.setStyleSheet("QLabel {\n"
@@ -292,6 +320,28 @@ class Ui_MainWindow(object):
 "    font-size: 13px;\n"
 "}")
         self.notificationBtn.setObjectName("notificationBtn")
+        self.addScheduleBtn = QtWidgets.QPushButton(parent=self.widget_2)
+        self.addScheduleBtn.setGeometry(QtCore.QRect(30, 30, 171, 32))
+        self.addScheduleBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.addScheduleBtn.setStyleSheet("QPushButton {\n"
+"    border-radius: 10px;\n"
+"    background: #1E95FE;\n"
+"    color: white;\n"
+"    font-weight: bold;\n"
+"    font-size: 13px;\n"
+"}")
+        self.addScheduleBtn.setObjectName("addScheduleBtn")
+        self.showUsersBtn = QtWidgets.QPushButton(parent=self.widget_2)
+        self.showUsersBtn.setGeometry(QtCore.QRect(270, 30, 141, 32))
+        self.showUsersBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.showUsersBtn.setStyleSheet("QPushButton {\n"
+"    border-radius: 10px;\n"
+"    background: #1E95FE;\n"
+"    color: white;\n"
+"    font-weight: bold;\n"
+"    font-size: 13px;\n"
+"}")
+        self.showUsersBtn.setObjectName("showUsersBtn")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -324,7 +374,8 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.label_4.setText(_translate("MainWindow", "Teachers"))
-        self.label_5.setText(_translate("MainWindow", "Schedule"))
+        self.prevWeekBtn.setText(_translate("MainWindow", "<"))
+        self.nextWeekBtn.setText(_translate("MainWindow", ">"))
         self.newTeacherLable.setText(_translate("MainWindow", "Новый преподаватель"))
         self.addInfoLable.setText(_translate("MainWindow", "Добавить информацию"))
         self.addTeacherInfoLable.setText(_translate("MainWindow", "Добавить преподавателя"))
@@ -336,21 +387,36 @@ class Ui_MainWindow(object):
         self.deleteUserBtn.setText(_translate("MainWindow", "Удалить"))
         self.removeTeacherBtn.setText(_translate("MainWindow", "Удалить"))
         self.removeInfoBtn.setText(_translate("MainWindow", "Удалить"))
-        self.notificationBtn.setText(_translate("MainWindow", "Прочитать"))
-        self.infoTextEdit.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть вертикальную полосу прокрутки
-        self.infoTextEdit.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть горизонтальную полосу прокрутки
+        self.notificationBtn.setText(_translate("MainWindow", "Уведомления"))
+        self.addScheduleBtn.setText(_translate("MainWindow", "Добавить расписание"))
+        self.showUsersBtn.setText(_translate("MainWindow", "Показать записи"))
+        self.infoTextEdit.setVerticalScrollBarPolicy(
+                Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть вертикальную полосу прокрутки
+        self.infoTextEdit.setHorizontalScrollBarPolicy(
+                Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть горизонтальную полосу прокрутки
         self.infoTextEdit.setStyleSheet("""
-                            QTextEdit {
-                                border: none;  # Убрать границы
-                                padding: 10px;  # Добавить отступы вокруг текста
-                                background-color: #f0f0f0;  # Цвет фона
-                                color: #333333;  # Цвет текста
-                                font-size: 14px;  # Размер шрифта
-                            }
-                        """)
+                                                    QTextEdit {
+                                                        border: none;  # Убрать границы
+                                                        padding: 10px;  # Добавить отступы вокруг текста
+                                                        background-color: #f0f0f0;  # Цвет фона
+                                                        color: #333333;  # Цвет текста
+                                                        font-size: 14px;  # Размер шрифта
+                                                    }
+                                                """)
         self.adminPanelBtn.hide()
+        self.addScheduleBtn.hide()
+        self.showUsersBtn.hide()
         self.nameEdit.setEnabled(False)
         self.surnameEdit.setEnabled(False)
         self.fatherEdit.setEnabled(False)
         self.dateEdit.setEnabled(False)
         self.countEdit.setEnabled(False)
+        self.scheduleTableWidget.setColumnCount(7)
+        self.scheduleTableWidget.setRowCount(12)
+        self.scheduleTableWidget.setHorizontalHeaderLabels(
+                ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"])
+        self.scheduleTableWidget.setVerticalHeaderLabels(
+                ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+                 "20:00"])
+        self.scheduleTableWidget.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+        self.scheduleTableWidget.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)

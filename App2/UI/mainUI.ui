@@ -212,17 +212,17 @@ QPushButton:checked {
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>591</width>
-       <height>441</height>
+       <x>10</x>
+       <y>70</y>
+       <width>611</width>
+       <height>461</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="profile_page">
       <property name="styleSheet">
@@ -475,23 +475,70 @@ p, li { white-space: pre-wrap; }
       </widget>
      </widget>
      <widget class="QWidget" name="schedule_page">
-      <widget class="QLabel" name="label_5">
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 10px;
+	background: #1E95FE;
+	color: white;
+	font-weight: bold;
+	font-size: 13px;
+}</string>
+      </property>
+      <widget class="QTableWidget" name="scheduleTableWidget">
        <property name="geometry">
         <rect>
-         <x>180</x>
-         <y>160</y>
-         <width>251</width>
-         <height>91</height>
+         <x>0</x>
+         <y>30</y>
+         <width>611</width>
+         <height>431</height>
         </rect>
        </property>
-       <property name="styleSheet">
-        <string notr="true">font-size: 30px;</string>
+      </widget>
+      <widget class="QPushButton" name="prevWeekBtn">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>41</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Schedule</string>
+        <string>&lt;</string>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+      </widget>
+      <widget class="QPushButton" name="nextWeekBtn">
+       <property name="geometry">
+        <rect>
+         <x>570</x>
+         <y>0</y>
+         <width>41</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+&quot;
+                                       &quot;    border-radius: 10px;
+&quot;
+                                       &quot;    background: #1E95FE;
+&quot;
+                                       &quot;    color: white;
+&quot;
+                                       &quot;    font-weight: bold;
+&quot;
+                                       &quot;    font-size: 13px;
+&quot;
+                                       &quot;}</string>
+       </property>
+       <property name="text">
+        <string>&gt;</string>
        </property>
       </widget>
      </widget>
@@ -760,6 +807,56 @@ QComboBox QAbstractItemView {
      </property>
      <property name="text">
       <string>Уведомления</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="addScheduleBtn">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>171</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	border-radius: 10px;
+	background: #1E95FE;
+	color: white;
+	font-weight: bold;
+	font-size: 13px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Добавить расписание</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="showUsersBtn">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>30</y>
+       <width>141</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	border-radius: 10px;
+	background: #1E95FE;
+	color: white;
+	font-weight: bold;
+	font-size: 13px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Показать записи</string>
      </property>
     </widget>
    </widget>

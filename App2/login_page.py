@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QMessageBox
-from mainWindow import PersonalCabinet
+from mainWindow import mainWindow
 from registration_page import RegistrationPage
 from App2.UI.login_pageUI import Ui_Form
 import sqlite3, sys
@@ -29,15 +29,16 @@ class LoginPage(QWidget, Ui_Form):
         passwordIn = self.passInput.text()
 
         query_userInfo = """
-                        SELECT login, password, role
+                        SELECT login, password, id
                         FROM users           
                         """
         cur.execute(query_userInfo)
         user_info = {row[0]: row[1] for row in cur.fetchall()}
+        id = [id[2] for id in cur.fetchall()]
 
         if loginIn in user_info and passwordIn == user_info[loginIn]:
             self.close()  # Скрываем окно авторизации
-            self.personalCabinet = PersonalCabinet(loginIn)  # Создаем объект personalCabinet и сохраняем его как атрибут
+            self.personalCabinet = mainWindow(loginIn)  # Создаем объект personalCabinet и сохраняем его как атрибут
             self.personalCabinet.show()  # Показываем окно личного кабинета
         else:
             QMessageBox.information(self, "Внимание", "Логин или пароль введены неверно!")

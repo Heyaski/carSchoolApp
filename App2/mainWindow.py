@@ -1,24 +1,26 @@
-from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QDialog, QTableWidgetItem
-from PyQt6.QtCore import QDate, QTimer
-from PyQt6.uic.properties import QtGui
-
+from PyQt6.QtWidgets import QMainWindow, QMessageBox
+from PyQt6.QtCore import QDate, QTime
 from App2.UI.mainUI import Ui_MainWindow
-from delete_info import deletInfoDialog
-from add_info import AddInfoDialog
-from change_password import ChangePasswordDialog  # Подключаем UI для диалогового окна
-from notification import Notification
+from add_schedule_dialog import AddScheduleDialog
+from change_password import ChangePasswordDialog
 import sqlite3
 
+from App2.add_info import AddInfoDialog
+from App2.delete_info import deletInfoDialog
+from App2.notification import Notification
+from App2.schedule_details import ScheduleDetailsDialog
 
-class PersonalCabinet(QMainWindow, Ui_MainWindow):
+
+class mainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, username):
         super().__init__()
-
         self.username = username
+        self.addScheduleDialog = AddScheduleDialog(self, self.username)
+        self.adminRole = 'heyaski'
         self.login_page = None
         self.setupUi(self)
         self.main()
+        self.getID()
         self.setWindowTitle("Ехай")
         self.setFixedSize(864, 557)
 
@@ -33,6 +35,11 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         self.saveBtn.clicked.connect(self.save)
         self.editBtn.clicked.connect(self.changeInfo)
         self.notificationBtn.clicked.connect(self.openNotification)
+        self.addScheduleBtn.clicked.connect(self.open_add_schedule_dialog)
+        self.nextWeekBtn.clicked.connect(self.next_week)
+        self.prevWeekBtn.clicked.connect(self.prev_week)
+        self.scheduleTableWidget.cellClicked.connect(self.show_schedule_details)
+        self.addScheduleDialog.load_schedule()
 
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
@@ -54,10 +61,8 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
             self.fatherEdit.setText(nameInfo[0][2])
             date_str = nameInfo[0][3]
             default_date = "01.01.2000"
-            default_date = QDate.fromString(date_str,
-                                            "dd.MM.yyyy")
-            date = QDate.fromString(date_str,
-                                    "dd.MM.yyyy")
+            default_date = QDate.fromString(date_str, "dd.MM.yyyy")
+            date = QDate.fromString(date_str, "dd.MM.yyyy")
             if date.isValid():
                 self.dateEdit.setDate(date)
             else:
@@ -71,6 +76,51 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
             self.adminPanelBtn.show()
             self.loadUserList()
             self.adminPanel()
+
+        if self.role == 'teacher' or self.username == self.adminRole:
+            self.showUsersBtn.show()
+            self.addScheduleBtn.show()
+
+    def show_schedule_details(self, row, column):
+        day = self.current_week_start.addDays(column)
+        date = day.toString("yyyy-MM-dd")
+        time = QTime.fromString(self.scheduleTableWidget.verticalHeaderItem(row).text(), "HH:mm")
+
+        con = sqlite3.connect("Data/users_info.db")
+        cur = con.cursor()
+        query = """
+            SELECT schedule.name, users.firstname || ' ' || users.lastname
+            FROM schedule
+            JOIN users ON schedule.teacher_id = users.id
+            WHERE schedule.datetime = ? AND schedule.date = ?
+        """
+        cur.execute(query, (f"{date} {time.toString('HH:mm')}:00", date))
+        details = cur.fetchall()
+        con.close()
+
+        dialog = ScheduleDetailsDialog(details, self)
+        dialog.exec()
+
+    def getID(self):
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute("SELECT id FROM users WHERE login=?", (self.username,))
+        self.id = [id[0] for id in cur.fetchall()]
+        con.close()
+
+    def open_add_schedule_dialog(self):
+        if self.addScheduleDialog.exec():
+            name, day, time = self.addScheduleDialog.get_data()
+            self.addScheduleDialog.add_schedule_to_db(name, day, time)
+            self.addScheduleDialog.load_schedule()
+
+    def next_week(self):
+        self.addScheduleDialog.current_week_start = self.addScheduleDialog.current_week_start.addDays(7)
+        self.addScheduleDialog.load_schedule()
+
+    def prev_week(self):
+        self.addScheduleDialog.current_week_start = self.addScheduleDialog.current_week_start.addDays(-7)
+        self.addScheduleDialog.load_schedule()
 
     def changeInfo(self):
         self.nameEdit.setEnabled(True)
@@ -98,17 +148,6 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
                            """
         cur.execute(update_query, (new_name, surname, fathername, date, self.username))
         con.commit()
-        con.close()
-
-    def loadInfo(self):
-        con = sqlite3.connect("Data/users_info.db")
-        cur = con.cursor()
-        query_info = """
-                    SELECT firstname, lastname, fathername, password, date, role
-                    FROM users
-                    """
-        cur.execute(query_info)
-        self.usInfo = cur.fetchall()
         con.close()
 
     def showProfile(self):
@@ -139,7 +178,7 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
     def loadUserList(self):
         con = sqlite3.connect('Data/users_info.db')
         cur = con.cursor()
-        cur.execute("SELECT login FROM users WHERE role='user' OR (role='admin' AND login!=? AND login!='heyaski')",
+        cur.execute("SELECT login FROM users WHERE role='user' OR (role='teacher' AND login!=? AND login!='heyaski')",
                     (self.username,))
         users = cur.fetchall()
         for user in users:
@@ -151,10 +190,10 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         selected_user = self.newTeacherComboBox.currentText()
         con = sqlite3.connect('Data/users_info.db')
         cur = con.cursor()
-        cur.execute(f"UPDATE users SET role='admin' WHERE login='{selected_user}'")
+        cur.execute(f"UPDATE users SET role='teacher' WHERE login='{selected_user}'")
         con.commit()
         con.close()
-        QMessageBox.information(self, 'Успех', f'Пользователь "{selected_user}" назначен администратором.')
+        QMessageBox.information(self, 'Успех', f'Пользователь "{selected_user}" назначен преподавателем.')
 
     def removeAdmin(self):
         selected_user = self.newTeacherComboBox.currentText()
@@ -163,7 +202,7 @@ class PersonalCabinet(QMainWindow, Ui_MainWindow):
         cur.execute(f"UPDATE users SET role='user' WHERE login='{selected_user}'")
         con.commit()
         con.close()
-        QMessageBox.information(self, 'Успех', f'Администраторские права у пользователя "{selected_user}" сняты.')
+        QMessageBox.information(self, 'Успех', f'Пользователь "{selected_user}" снят с должности преподаватель.')
 
     def deleteUser(self):
         selected_user = self.deleteUserComboBox.currentText()

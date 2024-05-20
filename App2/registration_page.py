@@ -25,14 +25,6 @@ class RegistrationPage(QWidget, Ui_Form):
 
         login = self.loginInput.text()
         password = self.passInput.text()
-
-        query_id = """
-                    SELECT id
-                    FROM users
-                    """
-
-        cur.execute(query_id)
-        ids = [id[0] for id in cur.fetchall()]
         query_login = """
                         SELECT login
                         FROM users           
