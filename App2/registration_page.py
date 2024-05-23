@@ -2,6 +2,7 @@ import sys
 from PyQt6.QtWidgets import QWidget, QMessageBox
 import sqlite3
 from App2.UI.registationUI import Ui_Form
+from App2.logger import log_change
 
 
 class RegistrationPage(QWidget, Ui_Form):
@@ -50,6 +51,7 @@ class RegistrationPage(QWidget, Ui_Form):
             self.passInput.setText('')
             self.rePassInput.setText('')
             QMessageBox.information(self, 'Поздравляем', "Аккаунт успешно создан!")
+            log_change("system", f'Зарегестрирован новый пользователь: {login}')
             self.close()
             from login_page import LoginPage
             self.login_page = LoginPage()

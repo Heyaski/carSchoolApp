@@ -1,24 +1,36 @@
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton
+from App2.UI.shedule_detailsUI import Ui_Dialog
+from App2.record_dialog import recordDialog
 
-class ScheduleDetailsDialog(QDialog):
-    def __init__(self, details, parent=None):
+class ScheduleDetailsDialog(QDialog, Ui_Dialog):
+    def __init__(self, username, date_details, details, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Детали занятия")
-        self.setFixedSize(300, 200)
-
         layout = QVBoxLayout()
+        self.setupUi(self)
+        self.details = details
+        self.username = username
+        self.date_details = date_details
 
-        if not details:
+
+
+        if not self.details:
             label = QLabel("Занятий нет")
             layout.addWidget(label)
         else:
-            for detail in details:
-                name, teacher = detail
-                layout.addWidget(QLabel(f"Занятие: {name}"))
-                layout.addWidget(QLabel(f"Преподаватель: {teacher}"))
+            for detail in self.details:
+                self.name, self.teacher = detail
+                layout.addWidget(QLabel(f"Занятие: {self.name}"))
+                layout.addWidget(QLabel(f"Преподаватель: {self.teacher}"))
 
-        close_button = QPushButton("Закрыть")
-        close_button.clicked.connect(self.accept)
-        layout.addWidget(close_button)
+        self.closeBtn.clicked.connect(self.accept)
+        self.recordBtn.clicked.connect(self.record)
+        layout.addWidget(self.recordBtn)
+        layout.addWidget(self.closeBtn)
 
         self.setLayout(layout)
+
+    def record(self):
+        self.accept()
+        rec = recordDialog(self.date_details, self.details, self.username)
+        rec.exec()
+

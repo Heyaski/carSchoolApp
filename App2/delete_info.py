@@ -2,6 +2,7 @@ import sqlite3
 
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from App2.UI.deleteInfoDialogUI import Ui_DialogDelete
+from App2.logger import log_change
 
 
 class deletInfoDialog(QDialog, Ui_DialogDelete):
@@ -23,6 +24,7 @@ class deletInfoDialog(QDialog, Ui_DialogDelete):
         con.commit()
         con.close()
         QMessageBox.information(self, 'Успех', f'Новость "{selected_title}" удалена из системы')
+        log_change("heyaski", f'Новость {selected_title} удалена из системы')
         self.accept()
 
     def loadTitle(self):

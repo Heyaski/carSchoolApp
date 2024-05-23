@@ -331,17 +331,17 @@ class Ui_MainWindow(object):
 "    font-size: 13px;\n"
 "}")
         self.addScheduleBtn.setObjectName("addScheduleBtn")
-        self.showUsersBtn = QtWidgets.QPushButton(parent=self.widget_2)
-        self.showUsersBtn.setGeometry(QtCore.QRect(270, 30, 141, 32))
-        self.showUsersBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.showUsersBtn.setStyleSheet("QPushButton {\n"
+        self.showRecordBtn = QtWidgets.QPushButton(parent=self.widget_2)
+        self.showRecordBtn.setGeometry(QtCore.QRect(270, 30, 141, 32))
+        self.showRecordBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.showRecordBtn.setStyleSheet("QPushButton {\n"
 "    border-radius: 10px;\n"
 "    background: #1E95FE;\n"
 "    color: white;\n"
 "    font-weight: bold;\n"
 "    font-size: 13px;\n"
 "}")
-        self.showUsersBtn.setObjectName("showUsersBtn")
+        self.showRecordBtn.setObjectName("showUsersBtn")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -389,7 +389,7 @@ class Ui_MainWindow(object):
         self.removeInfoBtn.setText(_translate("MainWindow", "Удалить"))
         self.notificationBtn.setText(_translate("MainWindow", "Уведомления"))
         self.addScheduleBtn.setText(_translate("MainWindow", "Добавить расписание"))
-        self.showUsersBtn.setText(_translate("MainWindow", "Показать записи"))
+        self.showRecordBtn.setText(_translate("MainWindow", "Показать записи"))
         self.infoTextEdit.setVerticalScrollBarPolicy(
                 Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть вертикальную полосу прокрутки
         self.infoTextEdit.setHorizontalScrollBarPolicy(
@@ -405,7 +405,6 @@ class Ui_MainWindow(object):
                                                 """)
         self.adminPanelBtn.hide()
         self.addScheduleBtn.hide()
-        self.showUsersBtn.hide()
         self.nameEdit.setEnabled(False)
         self.surnameEdit.setEnabled(False)
         self.fatherEdit.setEnabled(False)

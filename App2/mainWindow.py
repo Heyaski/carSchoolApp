@@ -4,11 +4,14 @@ from App2.UI.mainUI import Ui_MainWindow
 from add_schedule_dialog import AddScheduleDialog
 from change_password import ChangePasswordDialog
 import sqlite3
+import logging
 
 from App2.add_info import AddInfoDialog
+from App2.logger import log_change
 from App2.delete_info import deletInfoDialog
 from App2.notification import Notification
 from App2.schedule_details import ScheduleDetailsDialog
+from App2.show_records import showRecords
 
 
 class mainWindow(QMainWindow, Ui_MainWindow):
@@ -40,6 +43,8 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.prevWeekBtn.clicked.connect(self.prev_week)
         self.scheduleTableWidget.cellClicked.connect(self.show_schedule_details)
         self.addScheduleDialog.load_schedule()
+        self.addTeacherBtn.clicked.connect(self.openAddTeacherInfo)
+        self.showRecordBtn.clicked.connect(self.openShowRecords)
 
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
@@ -49,17 +54,17 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                         WHERE login = ?
                         """
         cur.execute(query_nameInfo, (self.username,))
-        nameInfo = cur.fetchall()
-        if nameInfo[0][5] == 'yes':
+        self.nameInfo = cur.fetchall()
+        if self.nameInfo[0][5] == 'yes':
             self.notificationBtn.setText('Уведомления')
         else:
             self.notificationBtn.setText('Прочитать')
-        self.role = nameInfo[0][4]
-        if nameInfo[0] != None:
-            self.nameEdit.setText(nameInfo[0][0])
-            self.surnameEdit.setText(nameInfo[0][1])
-            self.fatherEdit.setText(nameInfo[0][2])
-            date_str = nameInfo[0][3]
+        self.role = self.nameInfo[0][4]
+        if self.nameInfo[0] != None:
+            self.nameEdit.setText(self.nameInfo[0][0])
+            self.surnameEdit.setText(self.nameInfo[0][1])
+            self.fatherEdit.setText(self.nameInfo[0][2])
+            date_str = self.nameInfo[0][3]
             default_date = "01.01.2000"
             default_date = QDate.fromString(date_str, "dd.MM.yyyy")
             date = QDate.fromString(date_str, "dd.MM.yyyy")
@@ -78,11 +83,10 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             self.adminPanel()
 
         if self.role == 'teacher' or self.username == self.adminRole:
-            self.showUsersBtn.show()
             self.addScheduleBtn.show()
 
     def show_schedule_details(self, row, column):
-        day = self.current_week_start.addDays(column)
+        day = self.addScheduleDialog.current_week_start.addDays(column)
         date = day.toString("yyyy-MM-dd")
         time = QTime.fromString(self.scheduleTableWidget.verticalHeaderItem(row).text(), "HH:mm")
 
@@ -94,12 +98,20 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             JOIN users ON schedule.teacher_id = users.id
             WHERE schedule.datetime = ? AND schedule.date = ?
         """
-        cur.execute(query, (f"{date} {time.toString('HH:mm')}:00", date))
-        details = cur.fetchall()
+        cur.execute(query, (f"{time.toString('HH:mm')}:00", date))
+        self.details = cur.fetchall()
+        query_date = ("""SELECT schedule.datetime, schedule.date FROM schedule
+                      JOIN users ON schedule.teacher_id = users.id
+                      WHERE schedule.datetime = ? AND schedule.date = ?""")
+        cur.execute(query_date, (f"{time.toString('HH:mm')}:00", date))
+        self.date_details = cur.fetchall()
         con.close()
 
-        dialog = ScheduleDetailsDialog(details, self)
+        dialog = ScheduleDetailsDialog(self.username, self.date_details, self.details, self)
         dialog.exec()
+
+    def log_change(self, user, change):
+        logging.info(f'{user}: {change}')
 
     def getID(self):
         con = sqlite3.connect('Data/users_info.db')
@@ -149,6 +161,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         cur.execute(update_query, (new_name, surname, fathername, date, self.username))
         con.commit()
         con.close()
+        log_change("system", f'{self.username} изменил настройки профиля')
 
     def showProfile(self):
         self.stackedWidget.setCurrentIndex(0)
@@ -186,23 +199,34 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             self.deleteUserComboBox.addItem(user[0])
         con.close()
 
+    def get_teacher_info(self):
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute("SELECT login F")
+
     def assignAdmin(self):
         selected_user = self.newTeacherComboBox.currentText()
         con = sqlite3.connect('Data/users_info.db')
         cur = con.cursor()
         cur.execute(f"UPDATE users SET role='teacher' WHERE login='{selected_user}'")
+        cur.execute(f"SELECT id, firstname, lastname, fathername FROM users WHERE login='{selected_user}'")
+        teacher_info = cur.fetchall()
+        cur.execute(f"INSERT INTO teachers(id, name, surname, fathername, login) VALUES(?, ?, ?, ?, ?)", (teacher_info[0][0], teacher_info[0][1], teacher_info[0][2], teacher_info[0][3], selected_user))
         con.commit()
         con.close()
         QMessageBox.information(self, 'Успех', f'Пользователь "{selected_user}" назначен преподавателем.')
+        log_change(self.username, f'Пользователю {selected_user} выданы права')
 
     def removeAdmin(self):
         selected_user = self.newTeacherComboBox.currentText()
         con = sqlite3.connect('Data/users_info.db')
         cur = con.cursor()
         cur.execute(f"UPDATE users SET role='user' WHERE login='{selected_user}'")
+        cur.execute(f"DELETE FROM teachers WHERE login='{selected_user}'")
         con.commit()
         con.close()
         QMessageBox.information(self, 'Успех', f'Пользователь "{selected_user}" снят с должности преподаватель.')
+        log_change(self.username, f'У пользователя {selected_user} сняты права')
 
     def deleteUser(self):
         selected_user = self.deleteUserComboBox.currentText()
@@ -212,6 +236,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         con.commit()
         con.close()
         QMessageBox.information(self, 'Успех', f'Пользователь {selected_user} удален из системы.')
+        log_change(self.username, f'{selected_user} удален из системы')
         self.deleteUserComboBox.removeItem(self.deleteUserComboBox.findText(selected_user))
         self.newTeacherComboBox.removeItem(self.newTeacherComboBox.findText(selected_user))
 
@@ -233,8 +258,18 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         notification.read_notification()
         notification.exec()
 
+    def openAddTeacherInfo(self):
+        from App2.add_info_teacherDialog import addTeacherInfo
+        add = addTeacherInfo(self)
+        add.exec()
+
+    def openShowRecords(self):
+        showRecord = showRecords(self.username)
+        showRecord.exec()
+
     def logout(self):
         self.close()
+        log_change(self.username, "Вышел из системы")
         from login_page import LoginPage
         self.login_page = LoginPage()
         self.login_page.show()

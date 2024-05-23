@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from App2.UI.changePassUI import Ui_Dialog
+from App2.logger import log_change
 import sqlite3
 
 
@@ -34,6 +35,7 @@ class ChangePasswordDialog(QDialog, Ui_Dialog):
             con.commit()
             con.close()
             QMessageBox.information(self, "Успех", "Пароль успешно изменён")
+            log_change("system", f'{self.username} изменил пароль учетной записи')
             self.accept()
 
     def cancel(self):

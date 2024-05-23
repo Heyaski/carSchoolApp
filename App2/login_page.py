@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QMessageBox
 from mainWindow import mainWindow
 from registration_page import RegistrationPage
 from App2.UI.login_pageUI import Ui_Form
+from App2.logger import log_change
 import sqlite3, sys
 
 class LoginPage(QWidget, Ui_Form):
@@ -40,8 +41,10 @@ class LoginPage(QWidget, Ui_Form):
             self.close()  # Скрываем окно авторизации
             self.personalCabinet = mainWindow(loginIn)  # Создаем объект personalCabinet и сохраняем его как атрибут
             self.personalCabinet.show()  # Показываем окно личного кабинета
+            log_change(loginIn, "Вошел в систему")
         else:
             QMessageBox.information(self, "Внимание", "Логин или пароль введены неверно!")
+            log_change("system", f"Неудачная попытка входа в аккаунт {loginIn}")
 
         con.commit()
         con.close()

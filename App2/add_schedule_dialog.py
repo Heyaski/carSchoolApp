@@ -2,6 +2,7 @@ import sqlite3
 
 from App2.UI.mainUI import Ui_MainWindow
 from App2.UI.addScheduleUI import Ui_Dialog
+from App2.logger import log_change
 
 from PyQt6.QtCore import QDateTime, QDate
 from PyQt6.QtGui import QColor
@@ -57,14 +58,14 @@ class AddScheduleDialog(QDialog, Ui_Dialog, Ui_MainWindow):
         con.close()
 
         for name, datetime_str, day_of_week in rows:
-            datetime_obj = QDateTime.fromString(datetime_str, "yyyy-MM-dd HH:mm:ss")
+            datetime_obj = QDateTime.fromString(datetime_str, "HH:mm:ss")
             if datetime_obj.isValid():
                 time_str = datetime_obj.time().toString("HH:mm")
                 if time_str in time_slots:
                     time_index = time_slots.index(time_str)
                     if day_of_week >= 0 and day_of_week < 7:
                         item = QTableWidgetItem()
-                        item.setBackground(QColor("red"))
+                        item.setBackground(QColor("green"))
                         self.main_window.scheduleTableWidget.setItem(time_index, day_of_week, item)
 
     def getID(self):
@@ -79,7 +80,7 @@ class AddScheduleDialog(QDialog, Ui_Dialog, Ui_MainWindow):
         day_index = days_of_week.index(day)
         date = self.current_week_start.addDays(day_index).toString("yyyy-MM-dd")
 
-        datetime_str = f"{date} {time}:00"
+        datetime_str = f"{time}:00"
 
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
@@ -87,6 +88,7 @@ class AddScheduleDialog(QDialog, Ui_Dialog, Ui_MainWindow):
                     (name, datetime_str, date, day_index, self.id[0]))
         con.commit()
         con.close()
+        log_change(self.username, 'Добавил новое расписание')
         self.load_schedule()
 
     def add(self):

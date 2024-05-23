@@ -3,6 +3,7 @@ import sqlite3
 from App2.UI.addInfoDialogUI import Ui_Dialog
 from App2.UI.mainUI import Ui_MainWindow
 from notification import Notification
+from App2.logger import log_change
 
 
 class AddInfoDialog(QDialog, Ui_Dialog, Ui_MainWindow):
@@ -33,6 +34,7 @@ class AddInfoDialog(QDialog, Ui_Dialog, Ui_MainWindow):
             cur.execute("INSERT INTO information (title, text) VALUES (?, ?)", (title, text))
             con.commit()
             QMessageBox.information(self, "Успех", "Информация добавлена")
+            log_change(self.username, f'Добавлена новая информация {title}')
             self.accept()
             add = Notification(main_window=self, username=self.username)
             add.updateCleared('yes')
