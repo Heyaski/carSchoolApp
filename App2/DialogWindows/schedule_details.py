@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel
 from App2.UI.shedule_detailsUI import Ui_Dialog
-from App2.record_dialog import recordDialog
+from App2.DialogWindows.record_dialog import recordDialog
 
 class ScheduleDetailsDialog(QDialog, Ui_Dialog):
     def __init__(self, username, date_details, details, parent=None):

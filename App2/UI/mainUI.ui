@@ -222,7 +222,7 @@ QPushButton:checked {
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="profile_page">
       <property name="styleSheet">
@@ -428,6 +428,29 @@ QLineEdit {
        </property>
        <property name="text">
         <string>0</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="contactLable">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>120</y>
+         <width>81</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Контакты</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="contactEdit">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>120</y>
+         <width>171</width>
+         <height>21</height>
+        </rect>
        </property>
       </widget>
      </widget>

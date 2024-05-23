@@ -1,17 +1,17 @@
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from PyQt6.QtCore import QDate, QTime
 from App2.UI.mainUI import Ui_MainWindow
-from add_schedule_dialog import AddScheduleDialog
-from change_password import ChangePasswordDialog
+from App2.DialogWindows.add_schedule_dialog import AddScheduleDialog
+from App2.DialogWindows.change_password import ChangePasswordDialog
 import sqlite3
-import logging
 
-from App2.add_info import AddInfoDialog
-from App2.logger import log_change
-from App2.delete_info import deletInfoDialog
-from App2.notification import Notification
-from App2.schedule_details import ScheduleDetailsDialog
-from App2.show_records import showRecords
+from App2.DialogWindows.add_info import AddInfoDialog
+from App2.Data.logger import log_change
+from App2.DialogWindows.delete_info import deletInfoDialog
+from App2.DialogWindows.notification import Notification
+from App2.DialogWindows.schedule_details import ScheduleDetailsDialog
+from App2.DialogWindows.show_records import showRecords
+from App2.DialogWindows.schow_teacher_records import TeacherShowRecord
 
 
 class mainWindow(QMainWindow, Ui_MainWindow):
@@ -44,7 +44,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.scheduleTableWidget.cellClicked.connect(self.show_schedule_details)
         self.addScheduleDialog.load_schedule()
         self.addTeacherBtn.clicked.connect(self.openAddTeacherInfo)
-        self.showRecordBtn.clicked.connect(self.openShowRecords)
+        self.showUsersBtn.clicked.connect(self.openShowRecords)
 
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
@@ -110,14 +110,11 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         dialog = ScheduleDetailsDialog(self.username, self.date_details, self.details, self)
         dialog.exec()
 
-    def log_change(self, user, change):
-        logging.info(f'{user}: {change}')
-
     def getID(self):
         con = sqlite3.connect('Data/users_info.db')
         cur = con.cursor()
         cur.execute("SELECT id FROM users WHERE login=?", (self.username,))
-        self.id = [id[0] for id in cur.fetchall()]
+        self.id = cur.fetchone()[0]
         con.close()
 
     def open_add_schedule_dialog(self):
@@ -139,26 +136,29 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.surnameEdit.setEnabled(True)
         self.fatherEdit.setEnabled(True)
         self.dateEdit.setEnabled(True)
+        self.contactEdit.setEnabled(True)
 
     def save(self):
         self.nameEdit.setEnabled(False)
         self.surnameEdit.setEnabled(False)
         self.fatherEdit.setEnabled(False)
         self.dateEdit.setEnabled(False)
+        self.contactEdit.setEnabled(False)
 
         new_name = self.nameEdit.text()
         surname = self.surnameEdit.text()
         fathername = self.fatherEdit.text()
+        contact = self.contactEdit.text()
         date = self.dateEdit.date().toString("dd.MM.yyyy")
 
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
         update_query = """
                            UPDATE users
-                           SET firstname = ?, lastname = ?, fathername = ?, date = ?
+                           SET firstname = ?, lastname = ?, fathername = ?, date = ?, contact=?
                            WHERE login = ?
                            """
-        cur.execute(update_query, (new_name, surname, fathername, date, self.username))
+        cur.execute(update_query, (new_name, surname, fathername, date, contact, self.username))
         con.commit()
         con.close()
         log_change("system", f'{self.username} изменил настройки профиля')
@@ -259,13 +259,17 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         notification.exec()
 
     def openAddTeacherInfo(self):
-        from App2.add_info_teacherDialog import addTeacherInfo
+        from App2.DialogWindows.add_info_teacherDialog import addTeacherInfo
         add = addTeacherInfo(self)
         add.exec()
 
     def openShowRecords(self):
-        showRecord = showRecords(self.username)
-        showRecord.exec()
+        if self.role == "user":
+            showRecord = showRecords(self.username)
+            showRecord.exec()
+        else:
+            teacherRecord = TeacherShowRecord(self.id)
+            teacherRecord.exec()
 
     def logout(self):
         self.close()

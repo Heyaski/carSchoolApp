@@ -1,9 +1,8 @@
 import sqlite3
-from App2.logger import log_change
 from App2.UI.add_info_teacherUI import Ui_dialog
-from PyQt6.QtWidgets import QWidget, QMessageBox, QDialog
+from PyQt6.QtWidgets import QMessageBox, QDialog
 from App2.UI.mainUI import Ui_MainWindow
-from App2.logger import log_change
+from App2.Data.logger import log_change
 
 class addTeacherInfo(QDialog, Ui_dialog, Ui_MainWindow):
     def __init__(self, main_window):

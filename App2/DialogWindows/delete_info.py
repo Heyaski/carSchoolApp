@@ -2,7 +2,7 @@ import sqlite3
 
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from App2.UI.deleteInfoDialogUI import Ui_DialogDelete
-from App2.logger import log_change
+from App2.Data.logger import log_change
 
 
 class deletInfoDialog(QDialog, Ui_DialogDelete):

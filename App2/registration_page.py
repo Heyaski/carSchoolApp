@@ -2,7 +2,7 @@ import sys
 from PyQt6.QtWidgets import QWidget, QMessageBox
 import sqlite3
 from App2.UI.registationUI import Ui_Form
-from App2.logger import log_change
+from App2.Data.logger import log_change
 
 
 class RegistrationPage(QWidget, Ui_Form):

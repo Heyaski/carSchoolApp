@@ -2,7 +2,7 @@ import sqlite3
 
 from App2.UI.mainUI import Ui_MainWindow
 from App2.UI.addScheduleUI import Ui_Dialog
-from App2.logger import log_change
+from App2.Data.logger import log_change
 
 from PyQt6.QtCore import QDateTime, QDate
 from PyQt6.QtGui import QColor

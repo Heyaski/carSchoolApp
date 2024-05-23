@@ -155,6 +155,12 @@ class Ui_MainWindow(object):
         self.countEdit.setGeometry(QtCore.QRect(490, 60, 31, 21))
         self.countEdit.setStyleSheet("border: none;")
         self.countEdit.setObjectName("countEdit")
+        self.contactLable = QtWidgets.QLabel(parent=self.profile_page)
+        self.contactLable.setGeometry(QtCore.QRect(310, 120, 81, 21))
+        self.contactLable.setObjectName("contactLable")
+        self.contactEdit = QtWidgets.QLineEdit(parent=self.profile_page)
+        self.contactEdit.setGeometry(QtCore.QRect(400, 120, 171, 21))
+        self.contactEdit.setObjectName("contactEdit")
         self.stackedWidget.addWidget(self.profile_page)
         self.Information_page = QtWidgets.QWidget()
         self.Information_page.setObjectName("Information_page")
@@ -331,17 +337,17 @@ class Ui_MainWindow(object):
 "    font-size: 13px;\n"
 "}")
         self.addScheduleBtn.setObjectName("addScheduleBtn")
-        self.showRecordBtn = QtWidgets.QPushButton(parent=self.widget_2)
-        self.showRecordBtn.setGeometry(QtCore.QRect(270, 30, 141, 32))
-        self.showRecordBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.showRecordBtn.setStyleSheet("QPushButton {\n"
+        self.showUsersBtn = QtWidgets.QPushButton(parent=self.widget_2)
+        self.showUsersBtn.setGeometry(QtCore.QRect(270, 30, 141, 32))
+        self.showUsersBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.showUsersBtn.setStyleSheet("QPushButton {\n"
 "    border-radius: 10px;\n"
 "    background: #1E95FE;\n"
 "    color: white;\n"
 "    font-weight: bold;\n"
 "    font-size: 13px;\n"
 "}")
-        self.showRecordBtn.setObjectName("showUsersBtn")
+        self.showUsersBtn.setObjectName("showUsersBtn")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -368,6 +374,7 @@ class Ui_MainWindow(object):
         self.editBtn.setText(_translate("MainWindow", "Редактировать"))
         self.saveBtn.setText(_translate("MainWindow", "Сохранить"))
         self.countEdit.setText(_translate("MainWindow", "0"))
+        self.contactLable.setText(_translate("MainWindow", "Контакты"))
         self.infoTextEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -389,20 +396,20 @@ class Ui_MainWindow(object):
         self.removeInfoBtn.setText(_translate("MainWindow", "Удалить"))
         self.notificationBtn.setText(_translate("MainWindow", "Уведомления"))
         self.addScheduleBtn.setText(_translate("MainWindow", "Добавить расписание"))
-        self.showRecordBtn.setText(_translate("MainWindow", "Показать записи"))
+        self.showUsersBtn.setText(_translate("MainWindow", "Показать записи"))
         self.infoTextEdit.setVerticalScrollBarPolicy(
                 Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть вертикальную полосу прокрутки
         self.infoTextEdit.setHorizontalScrollBarPolicy(
                 Qt.ScrollBarPolicy.ScrollBarAlwaysOff)  # Скрыть горизонтальную полосу прокрутки
         self.infoTextEdit.setStyleSheet("""
-                                                    QTextEdit {
-                                                        border: none;  # Убрать границы
-                                                        padding: 10px;  # Добавить отступы вокруг текста
-                                                        background-color: #f0f0f0;  # Цвет фона
-                                                        color: #333333;  # Цвет текста
-                                                        font-size: 14px;  # Размер шрифта
-                                                    }
-                                                """)
+                                                            QTextEdit {
+                                                                border: none;  # Убрать границы
+                                                                padding: 10px;  # Добавить отступы вокруг текста
+                                                                background-color: #f0f0f0;  # Цвет фона
+                                                                color: #333333;  # Цвет текста
+                                                                font-size: 14px;  # Размер шрифта
+                                                            }
+                                                        """)
         self.adminPanelBtn.hide()
         self.addScheduleBtn.hide()
         self.nameEdit.setEnabled(False)
@@ -410,6 +417,7 @@ class Ui_MainWindow(object):
         self.fatherEdit.setEnabled(False)
         self.dateEdit.setEnabled(False)
         self.countEdit.setEnabled(False)
+        self.contactEdit.setEnabled(False)
         self.scheduleTableWidget.setColumnCount(7)
         self.scheduleTableWidget.setRowCount(12)
         self.scheduleTableWidget.setHorizontalHeaderLabels(

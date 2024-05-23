@@ -1,9 +1,9 @@
-from PyQt6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
+from PyQt6.QtWidgets import QDialog, QMessageBox
 import sqlite3
 from App2.UI.addInfoDialogUI import Ui_Dialog
 from App2.UI.mainUI import Ui_MainWindow
-from notification import Notification
-from App2.logger import log_change
+from App2.DialogWindows.notification import Notification
+from App2.Data.logger import log_change
 
 
 class AddInfoDialog(QDialog, Ui_Dialog, Ui_MainWindow):

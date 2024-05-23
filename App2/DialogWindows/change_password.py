@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from App2.UI.changePassUI import Ui_Dialog
-from App2.logger import log_change
+from App2.Data.logger import log_change
 import sqlite3
 
 

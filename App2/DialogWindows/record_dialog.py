@@ -2,7 +2,7 @@ import sqlite3
 
 from PyQt6.QtWidgets import QDialog, QMessageBox
 from App2.UI.record_dialogUI import Ui_Dialog
-from App2.logger import log_change
+from App2.Data.logger import log_change
 
 class recordDialog(QDialog, Ui_Dialog):
     def __init__(self, date_details, details, username):
