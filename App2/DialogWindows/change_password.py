@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QDialog, QMessageBox
 from App2.UI.changePassUI import Ui_Dialog
 from App2.Data.logger import log_change
 import sqlite3
+import bcrypt
 
 
 class ChangePasswordDialog(QDialog, Ui_Dialog):
@@ -24,6 +25,7 @@ class ChangePasswordDialog(QDialog, Ui_Dialog):
         elif newPass == '' or rePass == '':
             QMessageBox.information(self, "Внимание", "Введите пароль")
         else:
+            hashed_password = bcrypt.hashpw(newPass.encode('utf-8'), bcrypt.gensalt())
             con = sqlite3.connect("Data/users_info.db")
             cur = con.cursor()
             update_query = """
@@ -31,7 +33,7 @@ class ChangePasswordDialog(QDialog, Ui_Dialog):
                             SET password = ?
                             WHERE login = ?
                         """
-            cur.execute(update_query, (newPass, self.username))
+            cur.execute(update_query, (hashed_password.decode('utf-8'), self.username))
             con.commit()
             con.close()
             QMessageBox.information(self, "Успех", "Пароль успешно изменён")

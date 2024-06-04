@@ -22,12 +22,13 @@ class ScheduleDetailsDialog(QDialog, Ui_Dialog):
                 layout.addWidget(QLabel(f"Занятие: {self.name}"))
                 layout.addWidget(QLabel(f"Преподаватель: {self.teacher}"))
 
+        self.setLayout(layout)
         self.closeBtn.clicked.connect(self.accept)
         self.recordBtn.clicked.connect(self.record)
         layout.addWidget(self.recordBtn)
         layout.addWidget(self.closeBtn)
 
-        self.setLayout(layout)
+
 
     def record(self):
         self.accept()

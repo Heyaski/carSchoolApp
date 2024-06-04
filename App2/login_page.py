@@ -3,7 +3,9 @@ from mainWindow import mainWindow
 from registration_page import RegistrationPage
 from App2.UI.login_pageUI import Ui_Form
 from App2.Data.logger import log_change
-import sqlite3, sys
+import sqlite3
+import sys
+import bcrypt
 
 class LoginPage(QWidget, Ui_Form):
     def __init__(self):
@@ -35,9 +37,8 @@ class LoginPage(QWidget, Ui_Form):
                         """
         cur.execute(query_userInfo)
         user_info = {row[0]: row[1] for row in cur.fetchall()}
-        id = [id[2] for id in cur.fetchall()]
 
-        if loginIn in user_info and passwordIn == user_info[loginIn]:
+        if loginIn in user_info and bcrypt.checkpw(passwordIn.encode('utf-8'), user_info[loginIn].encode('utf-8')):
             self.close()  # Скрываем окно авторизации
             self.personalCabinet = mainWindow(loginIn)  # Создаем объект personalCabinet и сохраняем его как атрибут
             self.personalCabinet.show()  # Показываем окно личного кабинета
@@ -51,8 +52,8 @@ class LoginPage(QWidget, Ui_Form):
 
     def reg(self):
         self.close()
-        self.registation_page = RegistrationPage()
-        self.registation_page.show()
+        self.registration_page = RegistrationPage()
+        self.registration_page.show()
 
     def exit(self):
         sys.exit()

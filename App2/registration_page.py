@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QWidget, QMessageBox
 import sqlite3
+import bcrypt
 from App2.UI.registationUI import Ui_Form
 from App2.Data.logger import log_change
 
@@ -42,11 +43,12 @@ class RegistrationPage(QWidget, Ui_Form):
         elif self.loginInput.text() in logins:
             QMessageBox.information(self, 'Внимание', 'Логин уже используется!')
         else:
-            insert = f"""
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            insert = """
                     INSERT INTO users(login, password, role)
-                    VALUES('{login}', '{password}', 'user')
+                    VALUES(?, ?, 'user')
                     """
-            cur.execute(insert)
+            cur.execute(insert, (login, hashed_password.decode('utf-8')))
             self.loginInput.setText('')
             self.passInput.setText('')
             self.rePassInput.setText('')
@@ -65,7 +67,6 @@ class RegistrationPage(QWidget, Ui_Form):
         from login_page import LoginPage
         self.login_page = LoginPage()
         self.login_page.show()
-
 
     def exit(self):
         sys.exit()

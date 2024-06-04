@@ -12,6 +12,7 @@ from App2.DialogWindows.notification import Notification
 from App2.DialogWindows.schedule_details import ScheduleDetailsDialog
 from App2.DialogWindows.show_records import showRecords
 from App2.DialogWindows.schow_teacher_records import TeacherShowRecord
+from App2.DialogWindows.delete_info_teacherDialog import deleteInfoTeacher
 
 
 class mainWindow(QMainWindow, Ui_MainWindow):
@@ -44,12 +45,13 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.scheduleTableWidget.cellClicked.connect(self.show_schedule_details)
         self.addScheduleDialog.load_schedule()
         self.addTeacherBtn.clicked.connect(self.openAddTeacherInfo)
+        self.removeTeacherBtn.clicked.connect(self.deleteTeacherInfo)
         self.showUsersBtn.clicked.connect(self.openShowRecords)
 
         con = sqlite3.connect("Data/users_info.db")
         cur = con.cursor()
         query_nameInfo = """
-                        SELECT firstname, lastname, fathername, date, role, read
+                        SELECT firstname, lastname, fathername, date, role, read, contact
                         FROM users
                         WHERE login = ?
                         """
@@ -64,6 +66,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             self.nameEdit.setText(self.nameInfo[0][0])
             self.surnameEdit.setText(self.nameInfo[0][1])
             self.fatherEdit.setText(self.nameInfo[0][2])
+            self.contactEdit.setText(self.nameInfo[0][6])
             date_str = self.nameInfo[0][3]
             default_date = "01.01.2000"
             default_date = QDate.fromString(date_str, "dd.MM.yyyy")
@@ -262,6 +265,10 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         from App2.DialogWindows.add_info_teacherDialog import addTeacherInfo
         add = addTeacherInfo(self)
         add.exec()
+
+    def deleteTeacherInfo(self):
+        delete = deleteInfoTeacher()
+        delete.exec()
 
     def openShowRecords(self):
         if self.role == "user":
