@@ -40,6 +40,10 @@ class Ui_MainWindow(object):
         self.label.setGeometry(QtCore.QRect(50, 20, 121, 31))
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label.setObjectName("label")
+        self.label.setStyleSheet("background: transparent;\n"
+                                   "font-size: 30px;\n"
+                                   "border: none;"
+                                   "color: #fff;")
         self.profileBtn = QtWidgets.QPushButton(parent=self.widget)
         self.profileBtn.setGeometry(QtCore.QRect(20, 90, 181, 32))
         self.profileBtn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
@@ -357,7 +361,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Картинка"))
+        self.label.setText(_translate("MainWindow", "Ехай"))
         self.profileBtn.setText(_translate("MainWindow", "Профиль"))
         self.informationBtn.setText(_translate("MainWindow", "Информация"))
         self.teachersBtn.setText(_translate("MainWindow", "Преподаватели"))
