@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QMainWindow, QMessageBox
-from PyQt6.QtCore import QDate, QTime
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt6.QtCore import QDate, QTime, Qt
 from App2.UI.mainUI import Ui_MainWindow
 from App2.DialogWindows.add_schedule_dialog import AddScheduleDialog
 from App2.DialogWindows.change_password import ChangePasswordDialog
@@ -180,6 +180,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
 
     def showTeacher(self):
         self.stackedWidget.setCurrentIndex(2)
+        self.loadTeacherInfo()
 
     def showAdmin(self):
         self.stackedWidget.setCurrentIndex(4)
@@ -202,6 +203,45 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             self.deleteUserComboBox.addItem(user[0])
         con.close()
 
+    def loadUserList(self):
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        cur.execute("SELECT login FROM users WHERE role='user' OR (role='teacher' AND login!=? AND login!='heyaski')",
+                    (self.username,))
+        users = cur.fetchall()
+        for user in users:
+            self.newTeacherComboBox.addItem(user[0])
+            self.deleteUserComboBox.addItem(user[0])
+        con.close()
+
+    def loadTeacherInfo(self):
+        con = sqlite3.connect('Data/users_info.db')
+        cur = con.cursor()
+        query = """
+                SELECT t.name, t.surname, t.fathername, ti.expirience, ti.info 
+                FROM teachers t
+                JOIN teachers_info ti ON t.id = ti.id
+                """
+        cur.execute(query)
+        teacher_infos = cur.fetchall()
+
+        # Установить количество столбцов и заголовки
+        self.teacherTable.setColumnCount(5)
+        self.teacherTable.setHorizontalHeaderLabels(['Имя', 'Фамилия', 'Отчество', 'Опыт', 'Информация'])
+
+        # Очистить таблицу перед загрузкой новых данных
+        self.teacherTable.setRowCount(0)
+
+        # Заполнить таблицу данными
+        for row_number, row_data in enumerate(teacher_infos):
+            self.teacherTable.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                item = QTableWidgetItem(str(data))
+                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # Запретить редактирование ячейки
+                self.teacherTable.setItem(row_number, column_number, item)
+
+        con.close()
+
     def get_teacher_info(self):
         con = sqlite3.connect('Data/users_info.db')
         cur = con.cursor()
@@ -214,7 +254,8 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         cur.execute(f"UPDATE users SET role='teacher' WHERE login='{selected_user}'")
         cur.execute(f"SELECT id, firstname, lastname, fathername FROM users WHERE login='{selected_user}'")
         teacher_info = cur.fetchall()
-        cur.execute(f"INSERT INTO teachers(id, name, surname, fathername, login) VALUES(?, ?, ?, ?, ?)", (teacher_info[0][0], teacher_info[0][1], teacher_info[0][2], teacher_info[0][3], selected_user))
+        cur.execute(f"INSERT INTO teachers(id, name, surname, fathername, login) VALUES(?, ?, ?, ?, ?)",
+                    (teacher_info[0][0], teacher_info[0][1], teacher_info[0][2], teacher_info[0][3], selected_user))
         con.commit()
         con.close()
         QMessageBox.information(self, 'Успех', f'Пользователь "{selected_user}" назначен преподавателем.')
